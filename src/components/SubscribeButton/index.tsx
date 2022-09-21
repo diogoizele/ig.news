@@ -1,3 +1,4 @@
+import { signIn, useSession } from "next-auth/react";
 import styles from "./styles.module.scss";
 
 interface SubscribeButtonProps {
@@ -5,8 +6,24 @@ interface SubscribeButtonProps {
 }
 
 export function SubscribeButton({ priceId }: SubscribeButtonProps) {
+  const { data } = useSession();
+
+  function handleSubscribe() {
+    if (!data) {
+      signIn("github");
+      return;
+    }
+
+    // criação da checkout session
+    // https://stripe.com/docs/api/checkout/sessions
+  }
+
   return (
-    <button type="button" className={styles.subscribeButton}>
+    <button
+      type="button"
+      className={styles.subscribeButton}
+      onClick={handleSubscribe}
+    >
       Subscribe now
     </button>
   );
